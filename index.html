@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Соционика & ИИ</title>
+    <!-- Подключаем главный скрипт Telegram Web App -->
+    <script src="https://telegram.org"></script>
+    <style>
+        :root {
+            --tg-theme-bg-color: #ffffff;
+            --tg-theme-text-color: #000000;
+            --tg-theme-button-color: #2481cc;
+            --tg-theme-button-text-color: #ffffff;
+            --tg-theme-hint-color: #999999;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--tg-theme-bg-color);
+            color: var(--tg-theme-text-color);
+            margin: 0;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Шапка в стиле Bunch */
+        .header {
+            width: 100%;
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 24px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin: 0;
+        }
+
+        /* Главное описание */
+        .hero {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .hero h1 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .hero p {
+            font-size: 14px;
+            color: #666;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Сетка с услугами */
+        .services-grid {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        /* Карточка услуги (минимализм) */
+        .card {
+            background: #f9f9f9;
+            border: 1px solid #eeeeee;
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #e1f5fe;
+            color: #0288d1;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        .card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+            padding-right: 60px; /* Чтобы текст не залезал на бэдж */
+        }
+
+        .card p {
+            font-size: 13px;
+            color: #555555;
+            margin: 0 0 16px 0;
+            line-height: 1.4;
+        }
+
+        /* Кнопка оплаты (пока симуляция ЮKassa) */
+        .pay-button {
+            background-color: #000000; /* Черная стильная кнопка */
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            transition: background-color 0.2s;
+        }
+
+        .pay-button:active {
+            background-color: #333333;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Шапка сайта -->
+    <div class="header">
+        <h2 class="logo">SocioBot.</h2>
+    </div>
+
+    <!-- Информационный блок -->
+    <div class="hero">
+        <h1>Раскройте свой потенциал с помощью ИИ</h1>
+        <p>Пройдите продвинутый тест по соционике, получите разбор от эксперта и детальный текстовый отчет ваших сильных сторон.</p>
+    </div>
+
+    <!-- Список услуг (Блок 3-х вариантов) -->
+    <div class="services-grid">
+        
+        <!-- Вариант А -->
+        <div class="card">
+            <span class="card-badge">ИИ-Тест</span>
+            <h3>А) Тест по соционике</h3>
+            <p>Интерактивное тестирование с глубоким анализом результатов через нейросеть ChatGPT.</p>
+        </div>
+
+        <!-- Вариант Б -->
+        <div class="card">
+            <span class="card-badge">Лично</span>
+            <h3>Б) Видеосозвон с экспертом</h3>
+            <p>Индивидуальная консультация (видеоразбор) с последующим переводом всей аудиозаписи в структурированный текст.</p>
+        </div>
+
+        <!-- Вариант В -->
+        <div class="card">
+            <span class="card-badge">Дополнительно</span>
+            <h3>В) Дополнительные услуги</h3>
+            <p>Эксклюзивные гайды по совместимости, карьерные рекомендации и расширенные материалы.</p>
+        </div>
+
+    </div>
+
+    <!-- Кнопка оплаты -->
+    <button class="pay-button" id="payBtn">Купить полный доступ за 2990 ₽</button>
+
+    <script>
+        // Инициализируем Telegram Web App
+        const tg = window.Telegram.WebApp;
+        tg.ready(); // Сообщаем Telegram, что приложение готово
+        tg.expand(); // Разворачиваем мини-апп на максимум
+
+        const payButton = document.getElementById('payBtn');
+
+        payButton.addEventListener('click', () => {
+            // Имитируем отправку данных об успешном платеже назад в бота
+            // В реальной ЮKassa здесь будет генерация ссылки, но сейчас мы делаем заглушку.
+            const paymentData = {
+                status: "success",
+                amount: 2990,
+                services: ["A", "B", "C"]
+            };
+
+            // Передаем данные боту и закрываем окно сайта
+            tg.sendData(JSON.stringify(paymentData));
+            tg.close();
+        });
+    </script>
+</body>
+</html>
